@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import Section from '@components/ui/Section.astro';
+import { getI18n } from '@/i18n';
+import caseHeroImg from '@assets/photo-1451187580459-43490279c0fa.jpg';
+import caseWarehouseImg from '@assets/photo-1581091226825-a6a2a5aee158.jpg';
+import caseTradeImg from '@assets/photo-1607082349566-187342175e2f.jpg';
+import caseEcImg from '@assets/photo-1551288049-bebda4e38f71.jpg';
+
+const content = getI18n(Astro.url.pathname);
+const page = content.pages.case;
+const caseImages = [caseWarehouseImg, caseTradeImg, caseEcImg] as const;
+---
+
+<BaseLayout title={`${page.metaTitle}｜${content.company.name}`} description={page.metaDescription}>
+  <PageHero eyebrow={page.heroEyebrow} title={page.heroTitle} description={page.heroDescription} image={caseHeroImg} imageAlt={page.imageAlt} />
+  <Section>
+    <div class="grid gap-6 md:grid-cols-3">
+      {page.cases.map(([title, text, alt], index) => (
+        <article class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <Image src={caseImages[index]} alt={alt} class="aspect-[16/10] w-full object-cover" width={900} height={560} />
+          <div class="p-6">
+            <h2 class="text-xl font-semibold text-slate-950">{title}</h2>
+            <p class="mt-4 text-sm leading-7 text-slate-600">{text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

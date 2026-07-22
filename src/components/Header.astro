@@ -1,0 +1,74 @@
+---
+import { Icon } from 'astro-iconset/components';
+import MobileMenu from '@components/react/MobileMenu';
+import { getI18n, getLanguageLinks, localizePath } from '@/i18n';
+
+const { currentPathname } = Astro.props;
+const content = getI18n(currentPathname);
+const languageLinks = getLanguageLinks(currentPathname, content.locale);
+const DESKTOP_NAVIGATION = content.navigation.filter((item) =>
+  ['/', '/about', '/business', '/case', '/news', '/recruit'].includes(item.href)
+);
+const toHref = (href: string) => localizePath(href, content.locale);
+const normalize = (href: string) => (href === '/' ? '/' : `${href}/`);
+const isActiveLink = (href: string): boolean =>
+  href === '/' ? currentPathname === toHref('/') : normalize(currentPathname).startsWith(normalize(toHref(href)));
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
+  <nav class="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a href={toHref('/')} class="flex min-w-0 items-center gap-3" aria-label={content.company.name}>
+      <img src="/goso-logo.png" alt={content.company.name} class="h-8 w-auto max-w-[150px] object-contain sm:h-9 sm:max-w-[180px]" />
+    </a>
+
+    <div class="hidden lg:flex lg:items-center lg:gap-1">
+      {DESKTOP_NAVIGATION.map((item) => (
+        <a
+          href={toHref(item.href)}
+          class={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            isActiveLink(item.href)
+              ? 'bg-[#eef5f1] text-[#0f4a3c]'
+              : 'text-slate-700 hover:bg-stone-100 hover:text-[#0f4a3c]'
+          }`}
+        >
+          {item.name}
+        </a>
+      ))}
+    </div>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      <div class="flex items-center rounded-md border border-slate-200 p-1" aria-label={content.common.languageLabel}>
+        {languageLinks.map((link) => (
+          <a
+            href={link.href}
+            class={`rounded px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+              link.current ? 'bg-[#eef5f1] text-[#0f4a3c]' : 'text-slate-600 hover:bg-stone-100 hover:text-[#0f4a3c]'
+            }`}
+            aria-current={link.current ? 'true' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+      <a href={`tel:${content.company.phone}`} class="text-sm font-medium text-slate-600 hover:text-[#0f4a3c]">
+        {content.company.phone}
+      </a>
+      <a
+        href={toHref('/contact')}
+        class="inline-flex items-center gap-2 rounded-md bg-[#123c4a] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0f4a3c]"
+      >
+        {content.common.contactUs}
+        <Icon name="lucide:arrow-right" class="h-4 w-4" />
+      </a>
+    </div>
+
+    <MobileMenu
+      client:idle
+      company={content.company}
+      navigation={content.navigation}
+      common={content.common}
+      locale={content.locale}
+      languageLinks={languageLinks}
+    />
+  </nav>
+</header>

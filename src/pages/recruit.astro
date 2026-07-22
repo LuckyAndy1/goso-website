@@ -1,0 +1,43 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import Section from '@components/ui/Section.astro';
+import { getI18n, localizePath } from '@/i18n';
+import { Icon } from 'astro-iconset/components';
+import recruitHeroImg from '@assets/photo-1565043589221-1a6fd9ae45c7.jpg';
+
+const content = getI18n(Astro.url.pathname);
+const page = content.pages.recruit;
+const jobIcons = ['lucide:shopping-bag', 'lucide:warehouse', 'lucide:ship'] as const;
+---
+
+<BaseLayout title={`${page.metaTitle}｜${content.company.name}`} description={page.metaDescription}>
+  <PageHero eyebrow={page.heroEyebrow} title={page.heroTitle} description={page.heroDescription} image={recruitHeroImg} imageAlt={page.imageAlt} />
+  <Section>
+    <div class="border-y border-slate-300">
+      {page.jobs.map(([title, text], index) => (
+        <article class="grid gap-7 border-b border-slate-200 py-8 last:border-b-0 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-14 lg:py-12">
+          <div class:list={["min-w-0", index % 2 === 1 && "lg:order-2"]}>
+            <div class="flex aspect-[16/10] w-full items-center justify-center rounded-lg bg-[#10242b]" aria-hidden="true">
+              <span class="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d6b978]">
+                <Icon name={jobIcons[index]} class="h-12 w-12" />
+              </span>
+            </div>
+          </div>
+          <div class="min-w-0 py-2">
+            <div class="flex items-center gap-4">
+              <span class="text-sm font-semibold text-[#9b7836]">0{index + 1}</span>
+              <span class="h-px w-10 bg-slate-300"></span>
+            </div>
+            <h2 class="mt-5 text-2xl font-semibold text-slate-950 md:text-3xl">{title}</h2>
+            <p class="mt-5 max-w-2xl leading-8 text-slate-600">{text}</p>
+            <a href={localizePath('/contact', content.locale)} class="mt-7 inline-flex items-center gap-2 rounded-md bg-[#123c4a] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f4a3c]">
+              {page.applyLink}
+              <Icon name="lucide:arrow-right" class="h-4 w-4" />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

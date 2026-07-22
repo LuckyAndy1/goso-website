@@ -1,0 +1,82 @@
+---
+import { Icon } from 'astro-iconset/components';
+import { getI18n, localizePath } from '@/i18n';
+
+const { currentPathname } = Astro.props;
+const content = getI18n(currentPathname);
+const toHref = (href: string) => localizePath(href, content.locale);
+---
+
+<footer class="bg-[#10242b] text-slate-200">
+  <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div>
+        <a href={toHref('/')} class="flex items-center gap-3">
+          <span class="flex rounded-md bg-white px-3 py-2">
+            <img src="/goso-logo.png" alt={content.company.name} class="h-8 w-auto max-w-[150px] object-contain" />
+          </span>
+        </a>
+        <p class="mt-5 max-w-sm text-sm leading-7 text-slate-300">
+          {content.company.slogan}
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-white">{content.common.footerServices}</h3>
+        <ul class="mt-5 space-y-3">
+          {content.footerNavigation.services.map((item) => (
+            <li>
+              <a href={toHref(item.href)} class="text-sm text-slate-300 transition-colors hover:text-[#d6b978]">
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-white">{content.common.footerCompany}</h3>
+        <ul class="mt-5 space-y-3">
+          {content.footerNavigation.company.map((item) => (
+            <li>
+              <a href={toHref(item.href)} class="text-sm text-slate-300 transition-colors hover:text-[#d6b978]">
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-white">{content.common.footerContact}</h3>
+        <ul class="mt-5 space-y-4 text-sm text-slate-300">
+          <li class="flex gap-3">
+            <Icon name="lucide:phone" class="mt-0.5 h-4 w-4 text-[#d6b978]" />
+            <span>{content.company.phone}</span>
+          </li>
+          <li class="flex gap-3">
+            <Icon name="lucide:printer" class="mt-0.5 h-4 w-4 text-[#d6b978]" />
+            <span>{content.company.fax}</span>
+          </li>
+          <li class="flex gap-3">
+            <Icon name="lucide:mail" class="mt-0.5 h-4 w-4 text-[#d6b978]" />
+            <span>{content.company.email}</span>
+          </li>
+          <li class="flex gap-3">
+            <Icon name="lucide:map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-[#d6b978]" />
+            <span>〒{content.company.postalCode}<br />{content.company.address}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+      <p>&copy; {new Date().getFullYear()} {content.company.name}. {content.common.copyright}</p>
+      <div class="flex flex-wrap gap-x-5 gap-y-2">
+        <a href={toHref('/contact')} class="hover:text-[#d6b978]">{content.common.privacyPolicy}</a>
+        <a href={toHref('/contact')} class="hover:text-[#d6b978]">{content.common.terms}</a>
+        <span>{content.company.recordNumber}</span>
+      </div>
+    </div>
+  </div>
+</footer>

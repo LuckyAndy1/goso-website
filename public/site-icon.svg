@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="合創株式会社">
+  <rect width="128" height="128" rx="26" fill="#10242b"/>
+  <path d="M32 42h64v44H32z" fill="#f7f1e6"/>
+  <path d="M32 42l32-17 32 17H32z" fill="#c9a45c"/>
+  <path d="M45 55h38v8H45zm0 17h38v8H45z" fill="#123c4a"/>
+  <path d="M28 93h72" stroke="#c9a45c" stroke-width="8" stroke-linecap="round"/>
+  <path d="M64 25v68" stroke="#10242b" stroke-width="5" stroke-linecap="round" opacity=".28"/>
+</svg>

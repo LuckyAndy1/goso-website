@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import Section from '@components/ui/Section.astro';
+import { Icon } from 'astro-iconset/components';
+import { getI18n } from '@/i18n';
+import tradeImg from '@assets/photo-1542838132-92c53300491e.jpg';
+
+const content = getI18n(Astro.url.pathname);
+const page = content.pages.trade;
+---
+
+<BaseLayout title={`${page.metaTitle}｜${content.company.name}`} description={page.metaDescription}>
+  <PageHero eyebrow={page.heroEyebrow} title={page.heroTitle} description={page.heroDescription} image={tradeImg} imageAlt={page.imageAlt} />
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-start">
+      <div class="min-w-0 lg:sticky lg:top-28">
+        <div class="flex aspect-4/3 items-center justify-center rounded-lg bg-[#10242b] shadow-sm" aria-hidden="true">
+          <span class="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d6b978]">
+            <Icon name="lucide:ship" class="h-12 w-12" />
+          </span>
+        </div>
+        <div class="mt-5 rounded-lg bg-[#10242b] p-6 text-sm leading-7 text-slate-200">
+          {page.note}
+        </div>
+      </div>
+      <div class="space-y-6">
+        {page.steps.map(([title, text], index) => (
+          <div class={`rounded-lg border border-slate-200 bg-white p-6 shadow-sm ${index % 2 === 1 ? 'lg:ml-10' : ''}`}>
+            <div class="text-sm font-semibold text-[#9b7836]">0{index + 1}</div>
+            <h2 class="mt-3 text-2xl font-semibold text-slate-950">{title}</h2>
+            <p class="mt-3 leading-8 text-slate-600">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

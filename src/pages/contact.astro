@@ -1,0 +1,36 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import Section from '@components/ui/Section.astro';
+import ContactForm from '@components/react/ContactForm';
+import { getI18n } from '@/i18n';
+import { Icon } from 'astro-iconset/components';
+import contactImg from '@assets/photo-1521737604893-d14cc237f11d.jpg';
+
+const content = getI18n(Astro.url.pathname);
+const page = content.pages.contact;
+---
+
+<BaseLayout title={`${page.metaTitle}｜${content.company.name}`} description={page.metaDescription}>
+  <PageHero eyebrow={page.heroEyebrow} title={page.heroTitle} description={page.heroDescription} image={contactImg} imageAlt={page.imageAlt} />
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <aside class="rounded-lg bg-[#10242b] p-8 text-white">
+        <h2 class="text-2xl font-semibold">{page.infoTitle}</h2>
+        <ul class="mt-8 space-y-5 text-sm text-slate-200">
+          <li class="flex gap-3"><Icon name="lucide:phone" class="h-5 w-5 text-[#d6b978]" />{content.company.phone}</li>
+          <li class="flex gap-3"><Icon name="lucide:printer" class="h-5 w-5 text-[#d6b978]" />{content.company.fax}</li>
+          <li class="flex gap-3"><Icon name="lucide:mail" class="h-5 w-5 text-[#d6b978]" />{content.company.email}</li>
+          <li class="flex gap-3">
+            <Icon name="lucide:map-pin" class="h-5 w-5 shrink-0 text-[#d6b978]" />
+            <span>〒{content.company.postalCode}<br />{content.company.address}</span>
+          </li>
+          <li class="flex gap-3"><Icon name="lucide:clock" class="h-5 w-5 text-[#d6b978]" />{content.company.businessHours}</li>
+        </ul>
+      </aside>
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+        <ContactForm client:load contact={content.contact} />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

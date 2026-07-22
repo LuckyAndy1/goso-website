@@ -1,0 +1,48 @@
+---
+import HomePage from '../index.astro';
+import AboutPage from '../about.astro';
+import BusinessPage from '../business.astro';
+import CasePage from '../case.astro';
+import ContactPage from '../contact.astro';
+import EcServicePage from '../ec-service.astro';
+import FulfillmentPage from '../fulfillment.astro';
+import LogisticsPage from '../logistics.astro';
+import NewsPage from '../news.astro';
+import RecruitPage from '../recruit.astro';
+import TradePage from '../trade.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: undefined } },
+    { params: { slug: 'about' } },
+    { params: { slug: 'business' } },
+    { params: { slug: 'case' } },
+    { params: { slug: 'contact' } },
+    { params: { slug: 'ec-service' } },
+    { params: { slug: 'fulfillment' } },
+    { params: { slug: 'logistics' } },
+    { params: { slug: 'news' } },
+    { params: { slug: 'recruit' } },
+    { params: { slug: 'trade' } },
+  ];
+}
+
+const pages = {
+  '': HomePage,
+  about: AboutPage,
+  business: BusinessPage,
+  case: CasePage,
+  contact: ContactPage,
+  'ec-service': EcServicePage,
+  fulfillment: FulfillmentPage,
+  logistics: LogisticsPage,
+  news: NewsPage,
+  recruit: RecruitPage,
+  trade: TradePage,
+};
+
+const slug = Astro.params.slug ?? '';
+const Page = pages[slug as keyof typeof pages] ?? HomePage;
+---
+
+<Page />

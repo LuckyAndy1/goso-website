@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import Section from '@components/ui/Section.astro';
+import { getI18n } from '@/i18n';
+import newsHeroImg from '@assets/photo-1486312338219-ce68d2c6f44d.jpg';
+import newsProcessImg from '@assets/photo-1552664730-d307ca884978.jpg';
+import newsEcImg from '@assets/photo-1550751827-4bd374c3f58b.jpg';
+import newsWarehouseImg from '@assets/photo-1450101499163-c8848c66ca85.jpg';
+
+const content = getI18n(Astro.url.pathname);
+const page = content.pages.news;
+const newsImages = [newsProcessImg, newsEcImg, newsWarehouseImg] as const;
+const [featuredNews, ...otherNews] = content.home.news;
+const [featuredImage, ...otherImages] = newsImages;
+---
+
+<BaseLayout title={`${page.metaTitle}｜${content.company.name}`} description={page.metaDescription}>
+  <PageHero eyebrow={page.heroEyebrow} title={page.heroTitle} description={page.heroDescription} image={newsHeroImg} imageAlt={page.imageAlt} />
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)] lg:gap-14">
+      <article class="min-w-0">
+        <Image src={featuredImage} alt={featuredNews.title} class="aspect-[16/9] w-full rounded-lg object-cover" width={1200} height={675} />
+        <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
+          <span class="font-semibold text-[#9b7836]">{featuredNews.category}</span>
+          <time>{featuredNews.date}</time>
+        </div>
+        <h2 class="mt-4 max-w-3xl text-2xl font-semibold leading-9 text-slate-950 md:text-3xl">{featuredNews.title}</h2>
+        <p class="mt-4 max-w-3xl leading-8 text-slate-600">{featuredNews.excerpt}</p>
+      </article>
+
+      <div class="border-y border-slate-300">
+        {otherNews.map((item, index) => (
+          <article class="grid gap-5 border-b border-slate-200 py-6 last:border-b-0 sm:grid-cols-[140px_minmax(0,1fr)] lg:grid-cols-1 xl:grid-cols-[140px_minmax(0,1fr)]">
+            <Image src={otherImages[index]} alt={item.title} class="aspect-[4/3] w-full rounded-md object-cover" width={420} height={315} />
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                <span class="font-semibold text-[#9b7836]">{item.category}</span>
+                <time>{item.date}</time>
+              </div>
+              <h2 class="mt-3 text-lg font-semibold leading-7 text-slate-950">{item.title}</h2>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{item.excerpt}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
